@@ -9,10 +9,13 @@ namespace Skyrim.Manager.ViewModels
 	using System;
 	using System.Collections.ObjectModel;
 	using System.Collections.Specialized;
+	using System.IO;
 	using System.Linq;
+	using System.Security;
 	using System.Windows;
 	using System.Windows.Input;
 	using Commands;
+	using Microsoft.Win32;
 	using Models;
 
 	public class MainViewModel : ViewModel
@@ -22,14 +25,32 @@ namespace Skyrim.Manager.ViewModels
 		public MainViewModel(Settings settings)
 		{
 			this.settings    = settings;
+
+			if (!settings.Installed)
+			{
+				InitializeDefaults();
+			}
+
 			CharacterManager = new CharacterManagerViewModel(settings);
 
 			BrowseDataPath    = new BrowseCommand();
 			BrowseInstallPath = new BrowseCommand();
 			ExitCommand       = new ActionCommand(x => Application.Current.Shutdown(), x => true);
 
-			BrowseDataPath.BrowseCompletedEvent    += selectedPath => GameDataPath = selectedPath;
+			BrowseDataPath.BrowseCompletedEvent += selectedPath => GameDataPath = selectedPath;
 			BrowseInstallPath.BrowseCompletedEvent += selectedPath => InstallPath = selectedPath;
+		}
+
+		private void GameDataPathChanging(string path)
+		{
+			if (!GameDataPath.Equals(path, StringComparison.OrdinalIgnoreCase))
+			{
+				var result = MessageBox.Show(Application.Current.MainWindow, "You changed the data path where saves will be saved. Would you like to reload saved games from this new directory?", "Directory changed", MessageBoxButton.YesNo, MessageBoxImage.Information);
+				if (result == MessageBoxResult.Yes)
+				{
+//					CharacterManager.LoadCharacterListFromDisk();
+				}
+			}
 		}
 
 		#region Commands
@@ -52,6 +73,7 @@ namespace Skyrim.Manager.ViewModels
 			set
 			{
 				OnPropertyChanging();
+				GameDataPathChanging(value);
 				settings.Game.GameDataPath = value;
 				OnPropertyChanged();
 			}
@@ -70,5 +92,39 @@ namespace Skyrim.Manager.ViewModels
 
 		#endregion
 
+		private void InitializeDefaults()
+		{
+			if (settings.Installed) return;
+
+			string docsdir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+			GameDataPath = Path.Combine(docsdir, @"My Games\Skyrim");
+
+			RegistryKey steam = null;
+			try
+			{
+				steam = Registry.CurrentUser.OpenSubKey(@"Software\Valve\Steam");
+				if (steam != null)
+				{
+					var path = steam.GetValue("SteamPath").ToString();
+
+					path = Path.GetFullPath(Path.Combine(path, @"steamapps\common\skyrim"));
+					InstallPath = new Uri(path).LocalPath;
+				}
+			}
+			catch (SecurityException e)
+			{
+				// Report error to user.
+				IsValid = false;
+			}
+			finally
+			{
+				if (steam != null)
+				{
+					steam.Close();
+				}
+			}
+
+			settings.Installed = true;
+		}
 	}
 }

@@ -20,6 +20,9 @@ namespace Skyrim.Manager.Models
 
 		#region Properties
 
+		[JsonProperty("Installed")]
+		public bool Installed { get; set; }
+
 		[JsonProperty("Characters")]
 		public CharacterList Characters { get; set; }
 
@@ -71,8 +74,8 @@ namespace Skyrim.Manager.Models
 		[JsonObject]
 		public class CharacterList
 		{
-			[JsonProperty("list")]
-			public string[] List { get; set; }
+			[JsonProperty("characters")]
+			public Character[] List { get; set; }
 
 			[JsonProperty("selected")]
 			public string Selected { get; set; }
