@@ -41,7 +41,7 @@ namespace Skyrim.Manager.Commands
 		/// <param name="parameter">Data used by the command.  If the command does not require data to be passed, this object can be set to null.</param>
 		public bool CanExecute(object parameter)
 		{
-			return condition != null ? condition(parameter) : window != null;
+			return condition == null || condition(parameter);
 		}
 
 		/// <summary>
