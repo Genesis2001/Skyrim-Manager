@@ -45,8 +45,11 @@ namespace Skyrim.Manager.Commands
 				dialog.SelectedPath = parameter as string ?? "";
 				dialog.ShowNewFolderButton = false;
 
-				dialog.ShowDialog();
-				OnBrowseComplete(dialog.SelectedPath);
+				var result = dialog.ShowDialog();
+				if (result == DialogResult.OK)
+				{
+					OnBrowseComplete(dialog.SelectedPath);
+				}
 			}
 		}
 
