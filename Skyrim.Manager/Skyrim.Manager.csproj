@@ -61,6 +61,7 @@
     </ApplicationDefinition>
     <Compile Include="Commands\ActionCommand.cs" />
     <Compile Include="Commands\BrowseCommand.cs" />
+    <Compile Include="Commands\ShowWindowCommand.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="InvalidResourceException.cs" />
     <Compile Include="Models\Character.cs" />
