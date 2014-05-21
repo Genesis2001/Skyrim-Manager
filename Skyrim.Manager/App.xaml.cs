@@ -12,6 +12,7 @@ namespace Skyrim.Manager
 	using System.Windows;
 	using Models;
 	using ViewModels;
+	using Views;
 
 	public partial class App
 	{
@@ -36,18 +37,14 @@ namespace Skyrim.Manager
 			MainWindow.DataContext = viewModel;
 			MainWindow.Show();
 		}
-
-		#endregion
-
-		#region Overrides of Application
-
+		
 		/// <summary>
 		/// Raises the <see cref="E:System.Windows.Application.Exit"/> event.
 		/// </summary>
 		/// <param name="e">An <see cref="T:System.Windows.ExitEventArgs"/> that contains the event data.</param>
 		protected override async void OnExit(ExitEventArgs e)
 		{
-			settings.Characters.List = viewModel.Characters.ToArray();
+			settings.Characters.List = viewModel.CharacterManager.Characters.ToArray();
 
 			await Settings.Save(settings);
 		}

@@ -49,10 +49,10 @@ namespace Skyrim.Manager.Models
 			}
 		}
 
-		public static async Task Save(Settings settings, string path = null)
+		public static Task Save(Settings settings, string path = null)
 		{
 			string json = JsonConvert.SerializeObject(settings, Formatting.Indented);
-			if (string.IsNullOrEmpty(path))
+			if (String.IsNullOrEmpty(path))
 			{
 				path = settings.path;
 			}
@@ -60,7 +60,7 @@ namespace Skyrim.Manager.Models
 			using (var s = new FileStream(path, FileMode.Truncate))
 			using (var writer = new StreamWriter(s, new UTF8Encoding(false)))
 			{
-				await writer.WriteAsync(json);
+				return writer.WriteAsync(json);
 			}
 		}
 

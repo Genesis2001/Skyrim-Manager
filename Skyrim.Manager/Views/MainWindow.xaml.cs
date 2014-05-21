@@ -4,7 +4,7 @@
 //  </copyright>
 // -----------------------------------------------------------------------------
 
-namespace Skyrim.Manager
+namespace Skyrim.Manager.Views
 {
 	/// <summary>
 	///     Interaction logic for MainWindow.xaml

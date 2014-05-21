@@ -12,12 +12,12 @@ namespace Skyrim.Manager.Commands
 
 	public class BrowseCommand : ICommand
 	{
-		public event EventHandler<BrowseEventArgs> BrowseCompletedEvent;
+		public event Action<string> BrowseCompletedEvent;
 
 		private void OnBrowseComplete(string selectedPath)
 		{
 			var handler = BrowseCompletedEvent;
-			if (handler != null) handler(this, new BrowseEventArgs(selectedPath));
+			if (handler != null) handler(selectedPath);
 		}
 
 		#region Implementation of ICommand
@@ -62,15 +62,5 @@ namespace Skyrim.Manager.Commands
 		}
 
 		#endregion
-	}
-
-	public class BrowseEventArgs : EventArgs
-	{
-		public string SelectedPath { get; set; }
-
-		public BrowseEventArgs(string selectedPath)
-		{
-			SelectedPath = selectedPath;
-		}
 	}
 }

@@ -17,20 +17,19 @@ namespace Skyrim.Manager.ViewModels
 
 	public class MainViewModel : ViewModel
 	{
-		private readonly ObservableCollection<string> characters;
 		private readonly Settings settings;
 
 		public MainViewModel(Settings settings)
 		{
-			this.settings = settings;
-			characters = new ObservableCollection<string>(settings.Characters.List);
+			this.settings    = settings;
+			CharacterManager = new CharacterManagerViewModel(settings);
 
-			BrowseDataPath = new BrowseCommand();
+			BrowseDataPath    = new BrowseCommand();
 			BrowseInstallPath = new BrowseCommand();
-			ExitCommand = new ActionCommand(x => Application.Current.Shutdown(), x => true);
+			ExitCommand       = new ActionCommand(x => Application.Current.Shutdown(), x => true);
 
-			BrowseDataPath.BrowseCompletedEvent += (s, e) => GameDataPath = e.SelectedPath;
-			BrowseInstallPath.BrowseCompletedEvent += (s, e) => InstallPath = e.SelectedPath;
+			BrowseDataPath.BrowseCompletedEvent    += selectedPath => GameDataPath = selectedPath;
+			BrowseInstallPath.BrowseCompletedEvent += selectedPath => InstallPath = selectedPath;
 		}
 
 		#region Commands
@@ -45,21 +44,7 @@ namespace Skyrim.Manager.ViewModels
 
 		#region Properties
 
-		public ObservableCollection<string> Characters
-		{
-			get { return characters; }
-		}
-
-		public string CurrentCharacter
-		{
-			get { return settings.Characters.Selected; }
-			set
-			{
-				OnPropertyChanging();
-				settings.Characters.Selected = value;
-				OnPropertyChanged();
-			}
-		}
+		public CharacterManagerViewModel CharacterManager { get; private set; }
 
 		public string GameDataPath
 		{
