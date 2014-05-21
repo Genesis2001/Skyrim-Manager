@@ -1,0 +1,14 @@
+﻿{
+    "Characters": {
+        "list": ["Genesis", "Adeldon"],
+        "selected": "Genesis"
+    },
+
+    "Game": {
+        "InstallPath": "",
+        "GameDataPath": "",
+
+        "GameExe": "tesv.exe",
+        "CommandLine": ""
+    }
+}
