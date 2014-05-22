@@ -11,7 +11,6 @@ namespace Skyrim.Manager.Commands
 
 	public class ShowWindowCommand<T> : ICommand where T : Window, new()
 	{
-		private readonly Type window;
 		private readonly Window owner;
 		private readonly object context;
 		private readonly object properties;
@@ -22,12 +21,10 @@ namespace Skyrim.Manager.Commands
 		/// </summary>
 		public ShowWindowCommand(Window owner = null, object context = null, object properties = null, Func<object, bool> condition = null)
 		{
-			window = typeof (T);
-
-			this.owner = owner;
-			this.context = context;
+			this.owner      = owner;
+			this.context    = context;
 			this.properties = properties;
-			this.condition = condition;
+			this.condition  = condition;
 		}
 
 		#region Implementation of ICommand
@@ -50,8 +47,8 @@ namespace Skyrim.Manager.Commands
 		/// <param name="parameter">Data used by the command.  If the command does not require data to be passed, this object can be set to null.</param>
 		public void Execute(object parameter)
 		{
-			Window w = (Window)Activator.CreateInstance(window);
-			w.Owner = owner;
+			Window w      = (Window)Activator.CreateInstance(typeof (T));
+			w.Owner       = owner;
 			w.DataContext = context;
 
 			// TODO: Extract "properties" into this window ("w") instance.

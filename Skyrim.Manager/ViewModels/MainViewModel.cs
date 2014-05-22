@@ -17,6 +17,7 @@ namespace Skyrim.Manager.ViewModels
 	using Commands;
 	using Microsoft.Win32;
 	using Models;
+	using Views;
 
 	public class MainViewModel : ViewModel
 	{
@@ -33,11 +34,12 @@ namespace Skyrim.Manager.ViewModels
 
 			CharacterManager = new CharacterManagerViewModel(settings);
 
-			BrowseDataPath    = new BrowseCommand();
-			BrowseInstallPath = new BrowseCommand();
-			ExitCommand       = new ActionCommand(x => Application.Current.Shutdown(), x => true);
+			BrowseDataPath         = new BrowseCommand();
+			BrowseInstallPath      = new BrowseCommand();
+			ExitCommand            = new ActionCommand(x => Application.Current.Shutdown(), x => true);
+			ShowAboutWindowCommand = new ShowWindowCommand<AboutWindow>(owner: Application.Current.MainWindow, properties: new {ShowInTaskBar = false});
 
-			BrowseDataPath.BrowseCompletedEvent += selectedPath => GameDataPath = selectedPath;
+			BrowseDataPath.BrowseCompletedEvent    += selectedPath => GameDataPath = selectedPath;
 			BrowseInstallPath.BrowseCompletedEvent += selectedPath => InstallPath = selectedPath;
 		}
 
@@ -60,6 +62,8 @@ namespace Skyrim.Manager.ViewModels
 		public BrowseCommand BrowseInstallPath { get; private set; }
 
 		public BrowseCommand BrowseDataPath { get; private set; }
+
+		public ICommand ShowAboutWindowCommand { get; private set; }
 
 		#endregion
 

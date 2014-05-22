@@ -1,0 +1,11 @@
+﻿<Window x:Class="Skyrim.Manager.Views.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="AboutWindow"
+		WindowStartupLocation="CenterOwner"
+		Height="300" Width="300">
+	
+    <Grid>
+        <TextBlock Text="Hello world, this is an about page." />
+    </Grid>
+</Window>

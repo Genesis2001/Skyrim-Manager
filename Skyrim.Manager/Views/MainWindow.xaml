@@ -44,7 +44,7 @@
 			
 			<MenuItem Header="He_lp">
 				<MenuItem Header="Check for _Updates" IsEnabled="False" />
-				<MenuItem Header="A_bout" />
+				<MenuItem Header="A_bout" Command="{Binding ShowAboutWindowCommand}" />
 			</MenuItem>
 		</Menu>
 		
