@@ -1,9 +1,8 @@
 ﻿// -----------------------------------------------------------------------------
-//  <copyright file="ActionCommand.cs" company="Arizona Western College">
-//      Copyright (c) Arizona Western College.  All rights reserved.
+//  <copyright file="ActionCommand.cs" company="Zack Loveless">
+//      Copyright (c) Zack Loveless.  All rights reserved.
 //  </copyright>
 // -----------------------------------------------------------------------------
-
 namespace Skyrim.Manager.Commands
 {
 	using System;

@@ -1,16 +1,12 @@
 ﻿// -----------------------------------------------------------------------------
-//  <copyright file="MainViewModel.cs" company="Arizona Western College">
-//      Copyright (c) Arizona Western College.  All rights reserved.
+//  <copyright file="MainViewModel.cs" company="Zack Loveless">
+//      Copyright (c) Zack Loveless.  All rights reserved.
 //  </copyright>
 // -----------------------------------------------------------------------------
-
 namespace Skyrim.Manager.ViewModels
 {
 	using System;
-	using System.Collections.ObjectModel;
-	using System.Collections.Specialized;
 	using System.IO;
-	using System.Linq;
 	using System.Security;
 	using System.Windows;
 	using System.Windows.Input;
