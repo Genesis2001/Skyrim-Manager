@@ -34,13 +34,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Images\skyrimicon.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Images\skyrimicon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Ionic.Zip">
       <HintPath>..\lib\Ionic.Zip.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -60,20 +65,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AboutWindow.xaml.cs">
+    <Compile Include="Commands\BrowseCommand.cs" />
+    <Compile Include="Models\CharacterManager.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="Views\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Commands\ActionCommand.cs" />
     <Compile Include="Linq\AssemblyExtensions.cs" />
     <Compile Include="Linq\DateTimeExtensions.cs" />
     <Compile Include="Models\Character.cs" />
-    <Compile Include="Models\CharacterCollection.cs" />
-    <Compile Include="Models\CharacterManager.cs" />
+    <Compile Include="Models\Settings.cs" />
     <Compile Include="ObservableObject.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
-    <Compile Include="ViewModels\ConfigViewModel.cs" />
-    <Compile Include="ViewModels\ManagerViewModel.cs" />
-    <Page Include="AboutWindow.xaml">
+    <Compile Include="ViewModels\ViewModel.cs" />
+    <Compile Include="Views\ShellWindow.xaml.cs">
+      <DependentUpon>ShellWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Views\AboutWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -81,7 +90,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -89,10 +98,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\ShellWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -112,22 +125,27 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Resources\Images\Lang\en_US.json" />
+    <None Include="Resources\Settings.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\skyrimicon.ico" />
-    <Resource Include="Images\skyrimlogo.png" />
-    <Resource Include="Images\unifiedtech_logo.png" />
+    <Resource Include="Resources\Images\skyrimicon.ico" />
+    <Resource Include="Resources\Images\skyrimlogo.png" />
+    <Resource Include="Resources\Images\unifiedtech_logo.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Settings.xml" />
+    <EmbeddedResource Include="Settings.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BitFlex.IO\BitFlex.IO.csproj">

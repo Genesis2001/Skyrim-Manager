@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 
 <Settings>
-	<App remainOpen="true" autosave="false" />
-	
-	<Path>
-		<Install></Install>
-		<GameData></GameData>
+	<Core installed="true">
+		<InstallPath>...</InstallPath>
+		<GameDataPath>...</GameDataPath>
+		
 		<Launch />
-	</Path>
+	</Core>
+	
+	<Characters />
 </Settings>

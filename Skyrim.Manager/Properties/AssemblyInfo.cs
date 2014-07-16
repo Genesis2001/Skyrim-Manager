@@ -22,11 +22,11 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 
-[assembly: AssemblyTitle("Skyrim.Manager")]
+[assembly: AssemblyTitle("Skyrim.path")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Skyrim Manager")]
+[assembly: AssemblyProduct("Skyrim path")]
 [assembly: AssemblyCopyright("Copyright © 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

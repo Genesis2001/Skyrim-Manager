@@ -35,26 +35,24 @@ namespace Skyrim.Manager.ViewModels
 	using Models;
 
 	[Serializable]
-	[XmlRoot("Settings")]
+	[XmlRoot("SettingsXml")]
 	public class ConfigViewModel : ObservableObject
 	{
 		private AppConfig app;
 		private string applicationData;
-		private CharacterManager characters;
 		private string fileName;
-		private ConfigPath paths;
 
 		private InitializationFile ini;
+		private ConfigPath paths;
 
 		private ConfigViewModel()
 		{
 			App = new AppConfig();
-			Characters = new CharacterManager();
 			Paths = new ConfigPath();
-			
-			// Characters.CurrentCharacterChangedEvent += CharacterChangedCallback;
+
+			App.CurrentCharacterChangedEvent += CharacterChangedCallback;
 		}
-		
+
 		#region Properties
 
 		[XmlIgnore]
@@ -79,7 +77,7 @@ namespace Skyrim.Manager.ViewModels
 			}
 		}
 
-		[XmlElement("App")]
+		[XmlElement("path")]
 		public AppConfig App
 		{
 			get { return app; }
@@ -101,22 +99,12 @@ namespace Skyrim.Manager.ViewModels
 			}
 		}
 
-		public CharacterManager Characters
-		{
-			get { return characters; }
-			set
-			{
-				characters = value;
-				OnPropertyChanged();
-			}
-		}
-
 		#endregion
 
 		#region Methods
 
 		/// <summary>
-		///     Performs a one-time installation setup to configure and Skyrim Manager
+		///     Performs a one-time installation setup to configure and Skyrim path
 		/// </summary>
 		public void Install()
 		{
@@ -177,7 +165,7 @@ namespace Skyrim.Manager.ViewModels
 				ini.Load();
 			}
 
-			ini.Sections["General"].Keys["SLocalSavePath"] = Path.Combine("Saves", Characters.Current.Name);
+			ini.Sections["General"].Keys["SLocalSavePath"] = Path.Combine("Saves", App.Current.Name);
 			ini.Save();
 		}
 
@@ -269,7 +257,6 @@ namespace Skyrim.Manager.ViewModels
 #else
 						File.Move(s, sNew);
 #endif
-
 					}
 
 					c.Saves.Clear();
@@ -318,9 +305,24 @@ namespace Skyrim.Manager.ViewModels
 		public class AppConfig : ObservableObject
 		{
 			private bool autoSave;
+			private Character current;
 			private bool installed;
 			private bool keepOpen;
 
+			public event EventHandler CurrentCharacterChangedEvent;
+
+			[XmlAttribute("LastSelected")]
+			public Character Current
+			{
+				get { return current; }
+				set
+				{
+					current = value;
+					OnCurrentCharacterChanged();
+					OnPropertyChanged();
+				}
+			}
+			
 			[XmlAttribute("installed")]
 			public bool Installed
 			{
@@ -352,6 +354,12 @@ namespace Skyrim.Manager.ViewModels
 					autoSave = value;
 					OnPropertyChanged();
 				}
+			}
+			
+			protected virtual void OnCurrentCharacterChanged()
+			{
+				var handler = CurrentCharacterChangedEvent;
+				if (handler != null) handler(this, EventArgs.Empty);
 			}
 		}
 

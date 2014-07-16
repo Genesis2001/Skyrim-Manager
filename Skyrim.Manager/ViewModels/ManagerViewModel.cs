@@ -26,20 +26,21 @@ namespace Skyrim.Manager.ViewModels
 	using System.Windows.Input;
 	using Commands;
 	using Models;
+	using Views;
 
-	public class ManagerViewModel : ObservableObject
+    public class ManagerViewModel : ObservableObject
 	{
-		private readonly ConfigViewModel config;
+		private readonly Settings settingsXml;
 
-		public ManagerViewModel(ConfigViewModel config, Action<Object> shutdownMethod)
+        public ManagerViewModel(Settings settingsXml, Action<Object> shutdownMethod)
 		{
-			this.config = config;
+			this.settingsXml = settingsXml;
 
-			ExitCommand = new RelayCommand(shutdownMethod, o => true);
-			DataPathBrowseCommand = new RelayCommand(o => Config.Paths.GameDataPath = Browse(Config.Paths.GameDataPath), o => true);
-			InstallPathBrowseCommand = new RelayCommand(o => Config.Paths.InstallPath = Browse(Config.Paths.InstallPath), o => true);
-			SaveCommand = new RelayCommand(o => ConfigViewModel.Save(config, config.FileName), o => true);
-			ShowAboutDialogCommand = new RelayCommand(ShowAboutDialog, o => true);
+			ExitCommand = new ActionCommand(shutdownMethod, o => true);
+			DataPathBrowseCommand = new ActionCommand(o => SettingsXml.Paths.GameDataPath = Browse(SettingsXml.Paths.GameDataPath), o => true);
+			InstallPathBrowseCommand = new ActionCommand(o => SettingsXml.Paths.InstallPath = Browse(SettingsXml.Paths.InstallPath), o => true);
+			SaveCommand = new ActionCommand(o => ConfigViewModel.Save(settingsXml, settingsXml.FileName), o => true);
+			ShowAboutDialogCommand = new ActionCommand(ShowAboutDialog, o => true);
 		}
 
 		public ICommand DataPathBrowseCommand { get; private set; }
@@ -48,9 +49,9 @@ namespace Skyrim.Manager.ViewModels
 		public ICommand SaveCommand { get; private set; }
 		public ICommand ShowAboutDialogCommand { get; private set; }
 
-		public ConfigViewModel Config
+        public Settings SettingsXml
 		{
-			get { return config; }
+			get { return settingsXml; }
 		}
 
 		/// <summary>

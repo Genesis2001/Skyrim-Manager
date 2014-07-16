@@ -1,6 +1,6 @@
 ﻿// ----------------------------------------------------------------
 // Skyrim Manager
-// Copyright (c) 2013. Zack Loveless.
+// Copyright (c) 2014. Zack Loveless.
 // 
 // Original author(s) for this source file: Zack Loveless
 // 
@@ -18,19 +18,36 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ----------------------------------------------------------------
 
-namespace Skyrim.Manager
+namespace Skyrim.Manager.ViewModels
 {
-	using System;
-	using System.Windows;
+    using System.Collections.ObjectModel;
+    using Models;
 
-	/// <summary>
-	///     Interaction logic for AboutWindow.xaml
-	/// </summary>
-	public partial class AboutWindow
-	{
-		public AboutWindow()
-		{
-			InitializeComponent();
-		}
-	}
+    public class MainViewModel : ViewModel
+    {
+        private readonly Settings config;
+        private CharacterManager manager;
+
+        public MainViewModel(Settings config)
+        {
+            this.config = config;
+            manager = new CharacterManager();
+        }
+
+        public ObservableCollection<string> Characters
+        {
+            get { return config.CharactersConfig.Characters; }
+        }
+
+        public string Selected
+        {
+            get { return config.CharactersConfig.LastSelected; }
+            set
+            {
+                OnPropertyChanging();
+                config.CharactersConfig.LastSelected = value;
+                OnPropertyChanged();
+            }
+        }
+    }
 }

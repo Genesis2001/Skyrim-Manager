@@ -8,8 +8,8 @@
 	-->
 	
 	<!-- App and Window Strings -->
-	<System:String x:Key="AppNameString">Skyrim Manager</System:String>
-	<System:String x:Key="MainWindowTitleString">Skyrim Manager</System:String>
+	<System:String x:Key="AppNameString">Skyrim path</System:String>
+	<System:String x:Key="MainWindowTitleString">Skyrim path</System:String>
 	<System:String x:Key="AboutWindowTitleString">About</System:String>
 	
 	<!-- Menu Strings -->

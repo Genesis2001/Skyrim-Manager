@@ -1,0 +1,14 @@
+﻿{
+    "locale": "en_US",
+    "strings": {
+        "AppName": "Skyrim Manager",
+        "MainWindowTitle": "Skyrim manager",
+        "AboutWindowTitle": "About",
+        "FileMenuHeader": "File",
+        "SaveMenuitem": "Save",
+        "AutoSaveMenuItem": "Auto save",
+        "SelectCharacter": "Select a character",
+        "ManageCharacters": "Manage",
+        "Launch": "Launch",
+    }
+}

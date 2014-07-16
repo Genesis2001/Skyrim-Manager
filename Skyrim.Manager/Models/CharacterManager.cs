@@ -20,137 +20,48 @@
 
 namespace Skyrim.Manager.Models
 {
-	using System;
-	using System.CodeDom;
-	using System.Collections;
-	using System.Collections.Generic;
-	using System.Collections.ObjectModel;
-	using System.Linq;
-	using System.Xml.Serialization;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
 
-	public class CharacterManager : ObservableObject, IEnumerable<Character>
-	{
-		private ObservableCollection<Character> characters;
-		private Character current;
+    public class CharacterManager : IEnumerable<Character>
+    {
+        private readonly ObservableCollection<Character> characters; 
 
-		public CharacterManager()
-		{
-			Characters = new ObservableCollection<Character>();
-		}
+        public CharacterManager()
+        {
+            characters = new ObservableCollection<Character>();
+        }
 
-		public CharacterManager(IEnumerable<Character> characters)
-		{
-			Characters = new ObservableCollection<Character>(characters);
-		}
+        public ObservableCollection<Character> Characters
+        {
+            get { return characters; }
+        }
 
-		#region Properties
+        #region Implementation of IEnumerable
 
-		[XmlElement("Characters")]
-		public ObservableCollection<Character> Characters
-		{
-			get { return characters; }
-			private set
-			{
-				characters = value;
-				OnPropertyChanged();
-			}
-		}
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+        /// </returns>
+        public IEnumerator<Character> GetEnumerator()
+        {
+            return characters.GetEnumerator();
+        }
 
-		public int Count
-		{
-			get { return Characters.Count; }
-		}
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+        /// </returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
 
-		/*
-		[XmlAttribute("current")]
-		public string CurrentCharacter
-		{
-			get { return Current.Name; }
-			set { SetCurrentCharacterByName(value); }
-		} */
-		
-		[XmlAttribute("current")]
-		public Character Current
-		{
-			get { return current; }
-			set
-			{
-				current = value;
-				OnCurrentCharacterChangedEvent();
-				OnPropertyChanged();
-			}
-		}
-
-		#endregion
-
-		#region Events
-
-		public event EventHandler CurrentCharacterChangedEvent;
-
-		#endregion
-
-		public Character this[string characterName]
-		{
-			get
-			{
-				return Characters.SingleOrDefault(x => x.Name.Equals(characterName, StringComparison.InvariantCultureIgnoreCase));
-			}
-		}
-
-		#region Methods
-
-		public void Add(Character character)
-		{
-			Characters.Add(character);
-		}
-
-		public bool Contains(string characterName)
-		{
-			return Characters.Any(x => x.Name.Equals(characterName, StringComparison.InvariantCultureIgnoreCase));
-		}
-
-		protected virtual void OnCurrentCharacterChangedEvent()
-		{
-			var handler = CurrentCharacterChangedEvent;
-			if (handler != null) handler(this, EventArgs.Empty);
-		}
-
-		protected void SetCurrentCharacterByName(string value)
-		{
-			var c = Characters.SingleOrDefault(x => x.Name.Equals(value, StringComparison.InvariantCultureIgnoreCase));
-			if (c != null)
-			{
-				Current = c;
-			}
-		}
-
-		#endregion
-
-		#region Implementation of IEnumerable
-
-		/// <summary>
-		/// Returns an enumerator that iterates through the collection.
-		/// </summary>
-		/// <returns>
-		/// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
-		/// </returns>
-		public IEnumerator<Character> GetEnumerator()
-		{
-			return Characters.GetEnumerator();
-		}
-
-		/// <summary>
-		/// Returns an enumerator that iterates through a collection.
-		/// </summary>
-		/// <returns>
-		/// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
-		/// </returns>
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
-		}
-
-		#endregion
-	}
+        #endregion
+    }
 }
-

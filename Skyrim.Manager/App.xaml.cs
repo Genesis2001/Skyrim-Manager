@@ -21,60 +21,61 @@
 namespace Skyrim.Manager
 {
 	using System;
-	using System.ComponentModel;
 	using System.Diagnostics;
 	using System.IO;
 	using System.Reflection;
 	using System.Windows;
 	using Linq;
+	using Models;
 	using ViewModels;
+	using Views;
 
-	/// <summary>
-	///     Interaction logic for App.xaml
+    /// <summary>
+	///     Interaction logic for path.xaml
 	/// </summary>
 	public partial class App
 	{
-		private ConfigViewModel config;
+		private MainViewModel context;
+        private Settings config;
 
-		private string configPath;
-		private ManagerViewModel context;
-
-		#region Overrides of Application
+        #region Overrides of Application
 
 		/// <summary>
 		///     Raises the <see cref="E:System.Windows.Application.Startup" /> event.
 		/// </summary>
 		/// <param name="e">A <see cref="T:System.Windows.StartupEventArgs" /> that contains the event data.</param>
-		protected override void OnStartup(StartupEventArgs e)
+		protected override async void OnStartup(StartupEventArgs e)
 		{
 			if (MainWindow == null)
 			{
 				MainWindow = new MainWindow();
 			}
 
-			var asm = Assembly.GetAssembly(typeof (App));
+			var asm  = Assembly.GetAssembly(typeof (App));
 			var info = FileVersionInfo.GetVersionInfo(asm.Location);
 
-			var applicationData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-			var configPathBase = Path.Combine(applicationData, info.ProductName);
-			configPath = Path.Combine(configPathBase, "Settings.xml");
+		    string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+		    string path    = Path.Combine(appData, info.ProductName, "Settings.json");
 
-			if (!File.Exists(configPath))
+			if (!File.Exists(path))
 			{
-				if (!Directory.Exists(configPathBase))
-				{
-					Directory.CreateDirectory(configPathBase);
-				}
+			    string temp = Path.GetDirectoryName(path);
+                
+                Debug.Assert(temp != null, "temp != null");
 
-				if (!asm.SaveResource("Settings.xml", configPath))
+			    if (!Directory.Exists(temp))
+                {
+                    Directory.CreateDirectory(temp);
+                }
+
+				if (!asm.SaveResource("Settings.json", path))
 				{
-					throw new FileFormatException("Unable to extract default Settings.xml from application manifest.");
+					throw new FileFormatException("Unable to extract default SettingsXml.xml from application manifest.");
 				}
 			}
 
-			config = ConfigViewModel.Load(configPath);
-			config.PropertyChanged += ConfigOnPropertyChanged;
-			context = new ManagerViewModel(config, Disposal);
+		    config  = await Settings.Load(path);
+            context = new MainViewModel(config);
 
 			MainWindow.DataContext = context;
 			MainWindow.Show();
@@ -84,28 +85,13 @@ namespace Skyrim.Manager
 		///     Raises the <see cref="E:System.Windows.Application.Exit" /> event.
 		/// </summary>
 		/// <param name="e">An <see cref="T:System.Windows.ExitEventArgs" /> that contains the event data.</param>
-		protected override void OnExit(ExitEventArgs e)
+		protected override async void OnExit(ExitEventArgs e)
 		{
-			Disposal(e);
+		    base.OnExit(e);
 
-			base.OnExit(e);
+            await Settings.Save(config);
 		}
 
 		#endregion
-
-		private void ConfigOnPropertyChanged(object sender, PropertyChangedEventArgs args)
-		{
-			if (config.App.AutoSave)
-			{
-				ConfigViewModel.Save(config, config.FileName);
-			}
-		}
-
-		private void Disposal(object obj)
-		{
-			ConfigViewModel.Save(config, config.FileName);
-
-			Shutdown(0);
-		}
 	}
 }

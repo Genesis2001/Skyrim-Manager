@@ -1,5 +1,5 @@
 ﻿// ----------------------------------------------------------------
-// Skyrim Manager
+// Skyrim PathConfig
 // Copyright (c) 2013. Zack Loveless.
 // 
 // Original author(s) for this source file: Zack Loveless

@@ -45,7 +45,7 @@ namespace Skyrim.Manager.Models
 			}
 		}
 
-		[XmlElement("Save")]
+		[XmlIgnore]
 		public List<String> Saves
 		{
 			get { return saves; }
